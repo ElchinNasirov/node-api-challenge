@@ -60,13 +60,10 @@ router.put("/:id", validatePut, (req, res) => {
 
     Actions.update(id, updatedAction)
         .then(action => {
-            action ? res.status(201).json({ success: true, action }) : res.status(404).send("404 not found")
+            action ? res.status(201).json({ success: true, action }) : res.status(404).send("Not found")
         })
         .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                message: err
-            })
+            res.status(500).json({ success: false, error });
         })
 })
 
@@ -75,10 +72,10 @@ router.delete("/:id", (req, res) => {
     const { id } = req.params;
     Actions.remove(id)
         .then(action => {
-            res.status(204).json({ success: true });
+            res.status(204).json({ success: true, action, message: "Action is deleted."});
         })
-        .catch(error => {
-            res.status(500).json({ success: false, error })
+        .catch(err => {
+            res.status(500).json({ success: false, err })
         });
 })
 
